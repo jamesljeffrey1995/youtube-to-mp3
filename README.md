@@ -1,27 +1,25 @@
-# YouTube to MP3 Converter
+# YouTube to MP3 Converter for macOS
 
 This program reads YouTube links from a text file and converts each video into an MP3 audio file.
 
-Only download videos that you own or have permission to download.
+Only download media that you own or have permission to download.
 
 ## What you need
 
 You need:
 
-1. A Windows computer
+1. A Mac
 2. An internet connection
-3. Python
-4. FFmpeg
-5. The `youtube_to_mp3.py` file
-6. A text file containing the YouTube links
+3. The `youtube_to_mp3.py` file
+4. A text file containing the YouTube links
 
-Do not worry if you have never programmed before. Follow each step below in order.
+The instructions below install the other required software.
 
 ## Step 1: Create a folder
 
-1. Go to your Desktop.
-2. Right-click an empty area.
-3. Select **New**, then **Folder**.
+1. Open **Finder**.
+2. Open your **Desktop**.
+3. Click **File**, then **New Folder**.
 4. Name the folder:
 
    ```text
@@ -30,60 +28,99 @@ Do not worry if you have never programmed before. Follow each step below in orde
 
 5. Put `youtube_to_mp3.py` inside this folder.
 
-## Step 2: Install Python
+## Step 2: Install Homebrew
+
+Homebrew is a tool that installs the software needed by the converter.
 
 1. Visit:
 
-   https://www.python.org/downloads/
+   https://brew.sh
 
-2. Click the yellow **Download Python** button.
-3. Open the downloaded installer.
-4. Before clicking Install, tick the box that says:
+2. Copy the installation command shown under **Install Homebrew**.
+3. Open **Terminal**:
+   - Press `Command + Space`.
+   - Type `Terminal`.
+   - Press **Return**.
+4. Paste the Homebrew installation command into Terminal.
+5. Press **Return**.
+6. Enter your Mac password if requested.
 
-   ```text
-   Add Python to PATH
-   ```
+Your password will not appear on the screen while you type. This is normal. Type it carefully and press **Return**.
 
-5. Click **Install Now**.
-6. Wait for the installation to finish.
+The installer may display additional commands under **Next steps**. If it does, copy and run those commands before continuing. This is important because Homebrew might not work otherwise.
 
-## Step 3: Install FFmpeg
+## Step 3: Install Python and FFmpeg
 
-Open the **Start menu** and type:
+Keep Terminal open.
 
-```text
-Terminal
+Enter this command:
+
+```bash
+brew install python ffmpeg
 ```
 
-Open **Terminal** or **Windows PowerShell**.
+Press **Return** and wait for the installation to finish.
 
-Copy and paste this command into the window:
+You can check that both programs were installed by running:
 
-```powershell
-winget install --id Gyan.FFmpeg -e
+```bash
+python3 --version
+ffmpeg -version
 ```
 
-Press **Enter**.
+Both commands should display version information.
 
-If Windows asks whether you agree to any terms, type `Y` and press **Enter**.
+## Step 4: Open the converter folder in Terminal
 
-Wait for the installation to finish. Close and reopen Terminal afterward.
+Type the following into Terminal, including the space after `cd`:
 
-## Step 4: Install the YouTube downloader
-
-Open Terminal again.
-
-Copy and paste this command:
-
-```powershell
-python -m pip install --upgrade yt-dlp
+```bash
+cd 
 ```
 
-Press **Enter** and wait for it to finish.
+Do not press Return yet.
 
-## Step 5: Create the list of videos
+Drag the `YouTube Converter` folder from your Desktop into the Terminal window. Terminal will add the folder’s location automatically.
 
-Open **Notepad**.
+Now press **Return**.
+
+## Step 5: Create a private Python environment
+
+Run:
+
+```bash
+python3 -m venv .venv
+```
+
+This creates a private Python environment inside the converter folder. It keeps the converter’s software separate from the rest of your Mac.
+
+Activate it by running:
+
+```bash
+source .venv/bin/activate
+```
+
+You may now see `(.venv)` at the beginning of the Terminal line. That means it is active.
+
+## Step 6: Install the YouTube downloader
+
+Run:
+
+```bash
+python -m pip install --upgrade pip yt-dlp
+```
+
+Wait for the installation to finish.
+
+## Step 7: Create the list of videos
+
+Open **TextEdit**.
+
+Before entering any links:
+
+1. Click **Format** at the top of the screen.
+2. Select **Make Plain Text**.
+3. If it says **Make Rich Text** instead, the document is already plain text.
 
 Put one YouTube link on each line:
 
@@ -93,106 +130,56 @@ https://www.youtube.com/watch?v=EXAMPLE_TWO
 https://youtu.be/EXAMPLE_THREE
 ```
 
-The examples above are placeholders. Replace them with the real links you want to use.
+Replace these examples with the real links you want to use.
 
-In Notepad:
+To save the file:
 
-1. Click **File**.
-2. Click **Save As**.
-3. Open the `YouTube Converter` folder you created.
-4. Enter this filename:
+1. Click **File**, then **Save**.
+2. Enter this filename:
 
    ```text
    videos.txt
    ```
 
-5. Click **Save**.
+3. Save it inside the `YouTube Converter` folder.
+4. If TextEdit asks whether to add another file extension, keep the name as `videos.txt`.
 
 Your folder should now contain:
 
 ```text
 YouTube Converter
+├── .venv
 ├── youtube_to_mp3.py
 └── videos.txt
 ```
 
-## Step 6: Open Terminal in the folder
+The `.venv` folder may be hidden in Finder. That is normal.
 
-Open the `YouTube Converter` folder.
+## Step 8: Start the converter
 
-Right-click an empty area inside the folder and select:
+Make sure Terminal is still open in the `YouTube Converter` folder and that `(.venv)` appears at the beginning of the line.
 
-```text
-Open in Terminal
-```
+Run:
 
-If that option does not appear:
-
-1. Click the folder’s address bar.
-2. Type `powershell`.
-3. Press **Enter**.
-
-A Terminal window should open in the correct folder.
-
-## Step 7: Start the converter
-
-Enter this command:
-
-```powershell
+```bash
 python youtube_to_mp3.py videos.txt
 ```
 
-Press **Enter**.
-
 The program will process every link in `videos.txt`.
 
-When it finishes, a new folder named `downloads` will appear:
+When it finishes, a folder named `downloads` will appear:
 
 ```text
 YouTube Converter
 ├── downloads
 │   ├── First video.mp3
 │   └── Second video.mp3
+├── .venv
 ├── youtube_to_mp3.py
 └── videos.txt
 ```
 
-Your MP3 files will be inside the `downloads` folder.
-
-## Choosing the sound quality
-
-The normal quality is 192 kbps.
-
-For the highest available MP3 setting, use:
-
-```powershell
-python youtube_to_mp3.py videos.txt --quality 320
-```
-
-Available settings are:
-
-```text
-128
-192
-256
-320
-```
-
-Higher settings produce larger files. They cannot improve audio that was already lower quality.
-
-## Choosing a different output folder
-
-To save the files in a folder named `My Music`, use:
-
-```powershell
-python youtube_to_mp3.py videos.txt --output-dir "My Music"
-```
-
-You can combine this with a quality setting:
-
-```powershell
-python youtube_to_mp3.py videos.txt --output-dir "My Music" --quality 320
-```
+Your MP3 files will be inside `downloads`.
 
 ## Using the converter again
 
@@ -202,59 +189,139 @@ You do not need to reinstall anything.
 2. Remove the old links.
 3. Add the new links.
 4. Save and close the file.
-5. Open Terminal in the `YouTube Converter` folder.
-6. Run:
+5. Open Terminal.
+6. Type `cd` followed by a space.
+7. Drag the `YouTube Converter` folder into Terminal.
+8. Press **Return**.
+9. Activate the private Python environment:
 
-   ```powershell
-   python youtube_to_mp3.py videos.txt
+   ```bash
+   source .venv/bin/activate
    ```
 
-## If something goes wrong
+10. Run the converter:
 
-### “Python was not found”
+    ```bash
+    python youtube_to_mp3.py videos.txt
+    ```
 
-Python is either not installed or was not added to `PATH`.
+## Choosing the sound quality
 
-Install Python again and make sure you tick:
+The default setting is 192 kbps.
+
+For the highest available MP3 setting, run:
+
+```bash
+python youtube_to_mp3.py videos.txt --quality 320
+```
+
+The available settings are:
 
 ```text
-Add Python to PATH
+128
+192
+256
+320
 ```
+
+A higher setting produces larger files. It cannot improve audio that was already lower quality.
+
+## Choosing a different output folder
+
+To save the files in a folder named `My Music`, run:
+
+```bash
+python youtube_to_mp3.py videos.txt --output-dir "My Music"
+```
+
+To use that folder and select 320 kbps:
+
+```bash
+python youtube_to_mp3.py videos.txt --output-dir "My Music" --quality 320
+```
+
+## Stopping the converter
+
+To stop the program while it is running, press:
+
+```text
+Control + C
+```
+
+Partially downloaded files may remain in the `downloads` folder.
+
+## Fixing common problems
+
+### “command not found: brew”
+
+Homebrew was not added to your Terminal correctly.
+
+Run the commands shown under **Next steps** at the end of the Homebrew installation. You can also find installation help at:
+
+https://docs.brew.sh/Installation
+
+Close and reopen Terminal afterward.
+
+### “command not found: python”
+
+Use `python3` instead:
+
+```bash
+python3 youtube_to_mp3.py videos.txt
+```
+
+If the private environment is active, `python` should normally work.
 
 ### “No module named yt_dlp”
 
-Run:
+Open Terminal in the converter folder and run:
 
-```powershell
+```bash
+source .venv/bin/activate
 python -m pip install --upgrade yt-dlp
 ```
 
-Then try the converter again.
+Then try again.
 
 ### “FFmpeg is not installed”
 
 Run:
 
-```powershell
-winget install --id Gyan.FFmpeg -e
+```bash
+brew install ffmpeg
 ```
 
-Close Terminal, reopen it, and try again.
+When it finishes, try the converter again.
 
 ### “Input file not found”
 
 Make sure:
 
 - The file is named exactly `videos.txt`.
-- It is in the same folder as `youtube_to_mp3.py`.
-- Windows has not secretly named it `videos.txt.txt`.
+- It is inside the same folder as `youtube_to_mp3.py`.
+- The Terminal window is open in that folder.
 
-To check the real filename:
+You can display the files in the current folder by running:
 
-1. Open the folder.
-2. Click **View**.
-3. Select **Show**.
-4. Turn on **File name extensions**.
+```bash
+ls
+```
+
+You should see both:
+
+```text
+youtube_to_mp3.py
+videos.txt
+```
+
+### The file is named `videos.txt.rtf`
+
+TextEdit saved the file as a rich-text document.
+
+1. Open the file in TextEdit.
+2. Click **Format**.
+3. Select **Make Plain Text**.
+4. Save it again as `videos.txt`.
 
 ### A video will not download
 
@@ -267,13 +334,22 @@ Possible reasons include:
 - Your internet connection was interrupted.
 - YouTube changed something.
 
-First, update the downloader:
+Update the downloader:
 
-```powershell
+```bash
+source .venv/bin/activate
 python -m pip install --upgrade yt-dlp
 ```
 
 Then try again.
+
+### macOS will not let the script run
+
+Do not double-click `youtube_to_mp3.py`. Run it from Terminal using:
+
+```bash
+python youtube_to_mp3.py videos.txt
+```
 
 ## Important reminder
 
